@@ -46,14 +46,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Dashboard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Dashboard.Designer.cs">
+      <DependentUpon>Dashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Bai1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Bai1.Designer.cs">
+      <DependentUpon>Form_Bai1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Bai2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Bai2.Designer.cs">
+      <DependentUpon>Form_Bai2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Bai3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Bai3.Designer.cs">
+      <DependentUpon>Form_Bai3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Bai4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Bai4.Designer.cs">
+      <DependentUpon>Form_Bai4.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Dashboard.resx">
+      <DependentUpon>Dashboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
