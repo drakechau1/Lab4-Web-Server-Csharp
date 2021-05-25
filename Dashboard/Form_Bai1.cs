@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
@@ -14,14 +7,13 @@ namespace Dashboard
 {
     public partial class Form_Bai1 : Form
     {
-
-
         /// <summary>
         /// Child functions
         /// </summary>
 
         public string Get_HTML(string url)
         {
+            string html = string.Empty;
             try
             {
                 WebRequest web_request = WebRequest.Create(url);
@@ -31,14 +23,17 @@ namespace Dashboard
 
                 StreamReader reader = new StreamReader(stream);
 
-                return reader.ReadToEnd();
+                html = reader.ReadToEnd();
+
+                stream.Close();
+                web_response.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
 
-            return string.Empty;
+            return html;
         }
 
         /// <summary>
@@ -55,6 +50,17 @@ namespace Dashboard
             if (txt_URL.Text != string.Empty)
             {
                 rich_html.Text = Get_HTML(txt_URL.Text);
+            }
+        }
+
+        private void txt_URL_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                if (txt_URL.Text != string.Empty)
+                {
+                    rich_html.Text = Get_HTML(txt_URL.Text);
+                }
             }
         }
     }

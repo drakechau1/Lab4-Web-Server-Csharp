@@ -43,6 +43,7 @@ namespace Dashboard
             this.txt_URL.Name = "txt_URL";
             this.txt_URL.Size = new System.Drawing.Size(623, 30);
             this.txt_URL.TabIndex = 0;
+            this.txt_URL.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_URL_KeyPress);
             // 
             // btn_get
             // 
