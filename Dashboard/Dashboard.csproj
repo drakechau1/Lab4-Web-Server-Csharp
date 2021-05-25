@@ -84,6 +84,9 @@
     <EmbeddedResource Include="Form_Bai1.resx">
       <DependentUpon>Form_Bai1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Bai2.resx">
+      <DependentUpon>Form_Bai2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
