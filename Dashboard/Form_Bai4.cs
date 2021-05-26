@@ -7,12 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HtmlAgilityPack;
+using System.Net;
+using System.IO;
 
 namespace Dashboard
 {
     public partial class Form_Bai4 : Form
     {
         string url_homepage = "https://google.com";
+        string current_url;
 
         /// <summary>
         /// Child functions
@@ -30,6 +34,7 @@ namespace Dashboard
         private void Form_Bai4_Load(object sender, EventArgs e)
         {
             combox_URL.Text = url_homepage;
+            current_url = combox_URL.Text;
             webBrowser.Navigate(url_homepage);
         }
 
@@ -37,10 +42,16 @@ namespace Dashboard
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                if (combox_URL.Text != string.Empty)
+                if (current_url != string.Empty)
                 {
-                    combox_URL.Items.Add(combox_URL.Text);
-                    webBrowser.Navigate(combox_URL.Text);
+                    current_url = combox_URL.Text;
+
+                    if (combox_URL.FindString(current_url) == -1) // If current_url no match in combox_URL, It will add to items
+                    {
+                        combox_URL.Items.Add(current_url);
+                    }
+
+                    webBrowser.Navigate(current_url);
                 }
             }
         }
@@ -57,20 +68,30 @@ namespace Dashboard
 
         private void btn_home_Click(object sender, EventArgs e)
         {
+            current_url = url_homepage;
             combox_URL.Text = url_homepage;
             webBrowser.Navigate(url_homepage);
-
             //webBrowser.GoHome();
         }
 
         private void btn_download_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void btn_sourcesCode_Click(object sender, EventArgs e)
         {
+            WebRequest webRequest = WebRequest.Create(current_url);
+            webRequest.Credentials = CredentialCache.DefaultCredentials;
+            WebResponse webResponse = webRequest.GetResponse();
+            Stream stream = webResponse.GetResponseStream();
+            StreamReader reader = new StreamReader(stream);
 
+            Form form_viewSourceCode = new Form_ViewSourceCode(current_url, reader.ReadToEnd());
+            form_viewSourceCode.Show();
+
+            stream.Close();
+            webResponse.Close();
         }
     }
 }

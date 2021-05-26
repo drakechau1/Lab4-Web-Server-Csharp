@@ -65,7 +65,7 @@ namespace Dashboard
             this.btn_back.Name = "btn_back";
             this.btn_back.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.btn_back.Size = new System.Drawing.Size(29, 25);
-            this.btn_back.Text = "toolStripButton1";
+            this.btn_back.Text = "Back";
             this.btn_back.Click += new System.EventHandler(this.btn_back_Click);
             // 
             // btn_forward
@@ -76,7 +76,7 @@ namespace Dashboard
             this.btn_forward.Name = "btn_forward";
             this.btn_forward.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.btn_forward.Size = new System.Drawing.Size(29, 25);
-            this.btn_forward.Text = "toolStripButton2";
+            this.btn_forward.Text = "Forward";
             this.btn_forward.Click += new System.EventHandler(this.btn_forward_Click);
             // 
             // btn_home
@@ -87,7 +87,7 @@ namespace Dashboard
             this.btn_home.Name = "btn_home";
             this.btn_home.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.btn_home.Size = new System.Drawing.Size(29, 25);
-            this.btn_home.Text = "toolStripButton3";
+            this.btn_home.Text = "Home";
             this.btn_home.Click += new System.EventHandler(this.btn_home_Click);
             // 
             // combox_URL
@@ -107,7 +107,7 @@ namespace Dashboard
             this.btn_download.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_download.Name = "btn_download";
             this.btn_download.Size = new System.Drawing.Size(29, 25);
-            this.btn_download.Text = "toolStripButton4";
+            this.btn_download.Text = "Download HTML";
             this.btn_download.Click += new System.EventHandler(this.btn_download_Click);
             // 
             // btn_sourcesCode
@@ -117,7 +117,7 @@ namespace Dashboard
             this.btn_sourcesCode.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_sourcesCode.Name = "btn_sourcesCode";
             this.btn_sourcesCode.Size = new System.Drawing.Size(29, 25);
-            this.btn_sourcesCode.Text = "toolStripButton5";
+            this.btn_sourcesCode.Text = "View source code";
             this.btn_sourcesCode.Click += new System.EventHandler(this.btn_sourcesCode_Click);
             // 
             // webBrowser

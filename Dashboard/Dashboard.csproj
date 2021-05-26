@@ -85,6 +85,12 @@
     <Compile Include="Form_Bai4.Designer.cs">
       <DependentUpon>Form_Bai4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_ViewSourceCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_ViewSourceCode.Designer.cs">
+      <DependentUpon>Form_ViewSourceCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Dashboard.resx">
@@ -101,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Bai4.resx">
       <DependentUpon>Form_Bai4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_ViewSourceCode.resx">
+      <DependentUpon>Form_ViewSourceCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
