@@ -8,9 +8,28 @@ namespace Dashboard
     public partial class Form_Bai3 : Form
     {
         /// <summary>
+        ///  Global variables
+        /// </summary>
+        private string file_path = string.Empty;
+        /// <summary>
         /// Child functions
         /// </summary>
-        
+        public string Get_Saved_Path()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            sfd.Filter = "Hypertext Transfer Protocol | *.html";
+            sfd.DefaultExt = "html";
+            sfd.ShowDialog();
+
+            if (sfd.FileName != string.Empty)
+            {
+                return sfd.FileName;
+            }
+
+            return string.Empty;
+        }
+
         public string Get_HTML(string url)
         {
             string html = string.Empty;
@@ -37,12 +56,12 @@ namespace Dashboard
 
         public void Write_File(string path, string data)
         {
-            if (File.Exists(txt_savedPath.Text))
+            if (File.Exists(path))
             {
-                File.Delete(txt_savedPath.Text);
+                File.Delete(path);
             }
 
-            StreamWriter writer = File.CreateText(txt_savedPath.Text);
+            StreamWriter writer = File.CreateText(path);
             writer.WriteLine(data);
             writer.Flush();
             writer.Close();
@@ -59,37 +78,28 @@ namespace Dashboard
             InitializeComponent();
         }
 
+        private void txt_savedPath_MouseClick(object sender, MouseEventArgs e)
+        {
+            file_path = Get_Saved_Path();
+            txt_savedPath.Text = file_path;
+        }
+
         private void btn_download_Click(object sender, EventArgs e)
         {
-            string file_path = txt_savedPath.Text;
-            if (txt_URL.Text != string.Empty)
+            if (file_path != string.Empty)
             {
                 if (file_path == string.Empty)
                 {
                     MessageBox.Show("Saved path is empty", "Error");
                 }
                 else
-                { 
+                {
                     string html = Get_HTML(txt_URL.Text);
 
                     rich_html.Text = html;
 
                     Write_File(file_path, html);
                 }
-            }
-        }
-
-        private void txt_savedPath_MouseClick(object sender, MouseEventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-
-            sfd.Filter = "Hypertext Transfer Protocol | *.html";
-            sfd.DefaultExt = "html";
-
-            sfd.ShowDialog();
-            if (sfd.FileName != string.Empty)
-            {
-                txt_savedPath.Text = sfd.FileName;
             }
         }
     }
