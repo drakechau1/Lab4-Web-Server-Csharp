@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HtmlAgilityPack;
 using System.Net; 
 using System.IO;
+using System.Threading;
 
 namespace Dashboard
 {
@@ -76,7 +71,7 @@ namespace Dashboard
             Console.WriteLine("Get html has been successful");
         }
 
-        public List<string> Get_Files_Links(HtmlAgilityPack.HtmlDocument document, string xpath)
+        public List<string> Get_Files_Links(HtmlAgilityPack.HtmlDocument document, string xpath, string attribute)
         {
             List<string> links = new List<string>();
 
@@ -84,10 +79,10 @@ namespace Dashboard
 
             foreach (var node in nodes)
             {
-                string link = node.GetAttributeValue("src", string.Empty);
+                string link = node.GetAttributeValue(attribute, string.Empty);
                 if (link != string.Empty)
                 {
-                    Console.WriteLine(link);
+                    //Console.WriteLine(link);
                     links.Add(link);
                 }
             }
@@ -99,12 +94,29 @@ namespace Dashboard
 
         public void Download_1_File(string url, string saved_path)
         {
+            /*
+             Lấy url gốc:
+             Ví dụ: url = "https://google.com/" thì root_url = google.com
+             */
+            string root_url = current_url.Split('/')[2];
+
             if (url[0] == '/')
             {
                 if (url[1] == '/')
                     url = "https:" + url;
                 else
-                    url = "https:/" + url;
+                    url = $"https://{root_url}" + url;
+            }
+            else
+            {
+                /*
+                 Hàm substring để lấy chuỗi con của string
+                 Ví dụ: s = "Hello world" thì s.Substring(0,5) = "Chau"
+                 */
+                if (url.Substring(0, 4) != "http")
+                {
+                    url = $"https://{root_url}/" + url;
+                }
             }
 
             Console.WriteLine(url);
@@ -114,9 +126,9 @@ namespace Dashboard
                 WebClient webClient = new WebClient();
                 webClient.DownloadFile(url, saved_path);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Console.WriteLine(e.Message);  
+                Console.WriteLine(e.Message + ": " + url);
             }
         }
 
@@ -130,6 +142,33 @@ namespace Dashboard
             }
         }
 
+        // Tạo delegate để sử dụng comboBox trong thread
+        public delegate void Set_URL(string url, ComboBox combo);
+        public void Set_URL_2_ComboBox(string url, ComboBox combo)
+        {
+            if (combo.InvokeRequired)
+            {
+                Set_URL set_URL = new Set_URL(Set_URL_2_ComboBox);
+                this.Invoke(set_URL, new object[] { url, combo });
+            }
+            else
+            {
+                combo.Text = url;
+            }
+        }
+
+        public void Thread_Handle_ComboBox()
+        {
+            while(true)
+            {
+                string url = webBrowser.Url.AbsoluteUri;
+                Thread.Sleep(20);
+                if (url != webBrowser.Url.AbsoluteUri)
+                {
+                    Set_URL_2_ComboBox(webBrowser.Url.AbsoluteUri, combox_URL.ComboBox);
+                }
+            }
+        }
 
         /// <summary>
         /// Main functions
@@ -142,12 +181,16 @@ namespace Dashboard
 
         private void Form_Bai4_Load(object sender, EventArgs e)
         {
+            // Cài đặt trang chủ
             combox_URL.Text = url_homepage;
             current_url = combox_URL.Text;
             webBrowser.Navigate(url_homepage);
 
-            // Allow to run javascript files in browser
+            // Cho phép chạy file javascript trên web browser
             webBrowser.ScriptErrorsSuppressed = true;
+
+            Thread thread = new Thread(new ThreadStart(Thread_Handle_ComboBox));
+            thread.Start();
         }
 
         private void combox_URL_KeyPress(object sender, KeyPressEventArgs e)
@@ -186,7 +229,6 @@ namespace Dashboard
             //webBrowser.GoHome();
         }
 
-
         /*
          Việc download source code dự trên ý tưởng hoạt động của trình duyệt "Chrome":
          Khi download sẽ tạo 1 file html và 1 folder chứa các file hình ảnh, script, css.         
@@ -199,22 +241,23 @@ namespace Dashboard
 
             if (saved_path != string.Empty)
             {
-
                 string html = Get_HTML(current_url);
                 Download_HTML(saved_path, html);
 
                 HtmlAgilityPack.HtmlDocument document = new HtmlWeb().Load(current_url);
-                List<string> img_URLs = Get_Files_Links(document, "//img");
-                List<string> script_URLs = Get_Files_Links(document, "//script");
-                //List<string> css_URLs = Get_Files_Links(document, "//img");
+                List<string> img_URLs = Get_Files_Links(document, "//img", "src");
+                List<string> script_URLs = Get_Files_Links(document, "//script", "src");
+                List<string> css_URLs = Get_Files_Links(document, "//link[@rel='stylesheet']", "href");
 
                 string current_directory = Path.GetDirectoryName(saved_path);
-                string file_name_without_ext = Path.GetFileNameWithoutExtension(saved_path);
+                string file_name_without_ext = Path.GetFileNameWithoutExtension(saved_path); // Lấy tên file html ở trên
                 string saved_directory = Path.Combine(current_directory, file_name_without_ext);
+
+                // Tạo 1 folder có thể giống tên file html ở trên để chứa các file tải về (img, script, css)
                 Directory.CreateDirectory(saved_directory);
                 Download_All_Files(img_URLs, saved_directory);
                 Download_All_Files(script_URLs, saved_directory);
-                //Download_All_Files(img_URLs, saved_directory);
+                Download_All_Files(css_URLs, saved_directory);
 
                 MessageBox.Show("Downloading has been successful", "Success");
             }
