@@ -142,34 +142,6 @@ namespace Dashboard
             }
         }
 
-        // Tạo delegate để sử dụng comboBox trong thread
-        public delegate void Set_URL(string url, ComboBox combo);
-        public void Set_URL_2_ComboBox(string url, ComboBox combo)
-        {
-            if (combo.InvokeRequired)
-            {
-                Set_URL set_URL = new Set_URL(Set_URL_2_ComboBox);
-                this.Invoke(set_URL, new object[] { url, combo });
-            }
-            else
-            {
-                combo.Text = url;
-            }
-        }
-
-        public void Thread_Handle_ComboBox()
-        {
-            while(true)
-            {
-                string url = webBrowser.Url.AbsoluteUri;
-                Thread.Sleep(20);
-                if (url != webBrowser.Url.AbsoluteUri)
-                {
-                    Set_URL_2_ComboBox(webBrowser.Url.AbsoluteUri, combox_URL.ComboBox);
-                }
-            }
-        }
-
         /// <summary>
         /// Main functions
         /// </summary>
@@ -188,9 +160,6 @@ namespace Dashboard
 
             // Cho phép chạy file javascript trên web browser
             webBrowser.ScriptErrorsSuppressed = true;
-
-            Thread thread = new Thread(new ThreadStart(Thread_Handle_ComboBox));
-            thread.Start();
         }
 
         private void combox_URL_KeyPress(object sender, KeyPressEventArgs e)
