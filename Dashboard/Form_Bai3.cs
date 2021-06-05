@@ -86,7 +86,7 @@ namespace Dashboard
 
         private void btn_download_Click(object sender, EventArgs e)
         {
-            if (file_path != string.Empty)
+            if (txt_URL.Text != string.Empty)
             {
                 if (file_path == string.Empty)
                 {

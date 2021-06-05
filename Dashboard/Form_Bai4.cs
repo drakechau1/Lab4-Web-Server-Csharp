@@ -92,20 +92,20 @@ namespace Dashboard
             return links;
         }
 
-        public void Download_1_File(string url, string saved_path)
+        public string CheckURL(string url)
         {
             /*
-             Lấy url gốc:
-             Ví dụ: url = "https://google.com/" thì root_url = google.com
-             */
-            string root_url = current_url.Split('/')[2];
+                Lấy url gốc:
+                Ví dụ: url = "https://google.com/" thì domain = google.com
+            */
+            string domain = current_url.Split('/')[2];
 
             if (url[0] == '/')
             {
                 if (url[1] == '/')
                     url = "https:" + url;
                 else
-                    url = $"https://{root_url}" + url;
+                    url = $"https://{domain}" + url;
             }
             else
             {
@@ -115,12 +115,16 @@ namespace Dashboard
                  */
                 if (url.Substring(0, 4) != "http")
                 {
-                    url = $"https://{root_url}/" + url;
+                    url = $"https://{domain}/" + url;
                 }
             }
+            return url;
+        }
 
-            Console.WriteLine(url);
-
+        public void Download_1_File(string url, string saved_path)
+        {
+            url = CheckURL(url);
+            //Console.WriteLine(url);
             try
             {
                 WebClient webClient = new WebClient();
@@ -174,7 +178,6 @@ namespace Dashboard
                     {
                         combox_URL.Items.Add(current_url);
                     }
-
                     webBrowser.Navigate(current_url);
                 }
             }
@@ -191,11 +194,10 @@ namespace Dashboard
         }
 
         private void btn_home_Click(object sender, EventArgs e)
-        {
+        {   //webBrowser.GoHome();
             current_url = url_homepage;
             combox_URL.Text = url_homepage;
             webBrowser.Navigate(url_homepage);
-            //webBrowser.GoHome();
         }
 
         /*
